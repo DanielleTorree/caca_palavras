@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -13,6 +13,7 @@ import colors from '../colors.json';
 const createGame = require('../creates/createGame');
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
 
 // Regras:
 
@@ -43,16 +44,47 @@ const HuntingWords = () => {
     // const [rerender, setRerender] = useState(false);
     const [rows, setRows] = useState(12);
     const [columns, setColumns] = useState(12);
-    const [words, setWords] = useState(
+    const [allWords, setAllWords] = useState(
         [
-            'ASTROS1', 'CARTOGRAF2', 'MAPOTECA3',
+            '11111111', '22222222', '333333333', '444444444', '55555555', '666666666', '77777777', '8888888', '99999999', '000000000', '100000000'
         ]
-    )
+    );
+    const [words, setWords] = useState(['111111111', '222222222', '3333333333', '444444444']);
     // Palavras com mais de 10 caracteres: CARTANAUTICA, AGULHAMAREAR
     // Todas as palavras: ASTROS, CARTOGRAFO, MAPOTECA, ATLANTICO, ESTRELA, NAVEGACAO,ATLAS, OCULO, PORTULANO, CARTANAUTICA, AGULHAMAREAR
     const [state, setState] = useState({
         game: new createGame(rows, columns, words, options),
     });
+    const [qtdPalavrasEncontradas, setQtdPalavrasEncontradas] = useState(0);
+
+    const gerarPalavrasAleatorias = () => {
+        let palavrasAleatorias = [];
+        let todosIndices = [];
+        let aleatorio = 0;
+
+        while (todosIndices.length < 4) {
+            aleatorio = getRandomArbitrary(0, 11);
+
+            if (todosIndices.indexOf(aleatorio) == -1) {
+                todosIndices.push(aleatorio);
+            }
+        }
+
+        for (let i = 0; i < 4; i++) {
+            palavrasAleatorias.push(allWords[todosIndices[i]]);
+        }
+
+        setWords(palavrasAleatorias);
+        setState({
+            game: new createGame(rows, columns, palavrasAleatorias, options),
+        });
+
+        console.log(palavrasAleatorias)
+    }
+
+    function getRandomArbitrary(min, max) {
+        return parseInt(Math.random() * (max - min) + min);
+    }
 
     const getLetterSelectedSameWord = (word) => {
         let lettersSelected = 0;
@@ -75,6 +107,7 @@ const HuntingWords = () => {
 
             if (lettersSelected == word.length) {
                 alert("Você achou a palavra: " + word);
+                setQtdPalavrasEncontradas(qtdPalavrasEncontradas + 1);
             }
         }
     }
@@ -92,9 +125,7 @@ const HuntingWords = () => {
     }
 
     const gerarNovoGame = () => {
-        setState({
-            game: new createGame(rows, columns, words, options),
-        });
+        gerarPalavrasAleatorias();
     }
 
     const { board } = state.game;
@@ -102,78 +133,131 @@ const HuntingWords = () => {
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={colors.cor_primaria} />
-            <View style={styles.header}>
-                
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}
-                        style={styles.buttonGoBack}
-                    >
-                        <Icon
-                            name='arrow-left'
-                            type='font-awesome'
-                            color={colors.white}
-                            size={24}
-                        />
-                    </TouchableOpacity>
-                
-                    <Text
-                        style={styles.textHeader}
-                    >Caça Palavras</Text>
-            </View>
-            <View style={styles.containerCaixaExterna}>
-                <View style={styles.containerCaixaInterna}>
-                    {board.map((row, indexRow) => (
-                        <View key={'row' + indexRow} style={{ backgroundColor: '#258' }}>
-                            {row.map((column, indexColumn) => (
-                                <TouchableHighlight
-                                    activeOpacity={1}
-                                    underlayColor={colors.cor_secundaria}
-                                    key={'column' + indexColumn}
-                                    onPress={() => { selectLetter(column) }}
-                                    style={{
-                                        margin: -0.1,
-                                        width: width * 0.075,
-                                        height: height * 0.06,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        backgroundColor: column.isSelected ? colors.cor_secundaria : colors.white,
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            color: column.isSelected ? colors.white : colors.black,
-                                            fontSize: 24,
-                                            fontWeight: 'bold'
-                                        }}
-                                    >
-                                        {column.letter}
-                                    </Text>
-                                </TouchableHighlight>
+            {qtdPalavrasEncontradas != 4 ? (
+                <>
+                    <View style={styles.header}>
+
+                        <TouchableOpacity
+                            onPress={() => navigation.goBack()}
+                            style={styles.buttonGoBack}
+                        >
+                            <Icon
+                                name='arrow-left'
+                                type='font-awesome'
+                                color={colors.white}
+                                size={24}
+                            />
+                        </TouchableOpacity>
+
+                        <Text
+                            style={styles.textHeader}
+                        >Caça Palavras</Text>
+                    </View>
+                    <View style={styles.containerCaixaExterna}>
+                        <View style={styles.containerCaixaInterna}>
+                            {board.map((row, indexRow) => (
+                                <View key={'row' + indexRow} style={{ backgroundColor: '#258' }}>
+                                    {row.map((column, indexColumn) => (
+                                        <TouchableHighlight
+                                            activeOpacity={1}
+                                            underlayColor={colors.cor_secundaria}
+                                            key={'column' + indexColumn}
+                                            onPress={() => { selectLetter(column) }}
+                                            style={{
+                                                margin: -0.1,
+                                                width: width * 0.075,
+                                                height: height * 0.06,
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                backgroundColor: column.isSelected ? colors.cor_secundaria : colors.white,
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    color: column.isSelected ? colors.white : colors.black,
+                                                    fontSize: 24,
+                                                    fontWeight: 'bold'
+                                                }}
+                                            >
+                                                {column.letter}
+                                            </Text>
+                                        </TouchableHighlight>
+                                    ))}
+                                </View>
                             ))}
                         </View>
-                    ))}
+                    </View>
+                    <View
+                        style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <View
+                            style={{
+                                //backgroundColor: '#ccc',
+                                marginLeft: 18
+                            }}
+                        >
+                            <View style={styles.containerPalavras}>
+                                <Text style={styles.palavraDoContainer}>{words[0]}</Text>
+                                <Text style={styles.palavraDoContainer}>{words[1]}</Text>
+                            </View>
+                            <View style={styles.containerPalavras}>
+                                <Text style={styles.palavraDoContainer}>{words[2]}</Text>
+                                <Text style={styles.palavraDoContainer}>{words[3]}</Text>
+                            </View>
+                        </View>
+                        <View style={{
+                            width: width * 0.3,
+                            //backgroundColor: '#000',
+                        }}>
+                            <TouchableOpacity
+                                onPress={() => gerarNovoGame()}
+                                style={{
+                                    justifyContent: 'center',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Icon
+                                    reverse
+                                    name="rotate-right"
+                                    type="font-awesome"
+                                    size={24}
+                                    color={colors.cor_secundaria}
+                                />
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </>
+            ) : (
+                <>
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Home")}
+                        style={styles.buttonGoBack}
+                    >
+                        <Icon 
+                            name="x"
+                            type="foundation"
+                            sixe={24}
+                            color={colors.white}
+                            style={{fontWeight: 'bold'}}
+                        />
+                    </TouchableOpacity>
                 </View>
-            </View>
-            <TouchableOpacity
-                onPress={() => gerarNovoGame()}
-            >
-                <Text>Gerar Novo</Text>
-            </TouchableOpacity>
-            <View style={styles.containerPalavras}>
-                <Text style={styles.palavraDoContainer}>{words[0]}</Text>
-                <Text style={styles.palavraDoContainer}>{words[1]}</Text>
-                <Text style={styles.palavraDoContainer}>{words[2]}</Text>
-            </View>
-            <View style={styles.containerPalavras}>
-                <Text style={styles.palavraDoContainer}>{words[3]}</Text>
-                <Text style={styles.palavraDoContainer}>{words[4]}</Text>
-                <Text style={styles.palavraDoContainer}>{words[5]}</Text>
-            </View>
-            <View style={styles.containerPalavras}>
-                <Text style={styles.palavraDoContainer}>{words[6]}</Text>
-                <Text style={styles.palavraDoContainer}>{words[7]}</Text>
-                <Text style={styles.palavraDoContainer}>{words[8]}</Text>
-            </View>
+                
+                    {/* <LottieView
+                        source={require('../animations/winner_hunting_words.json')}
+                        autoPlay
+                        loop={true}
+                        style={{width: '70%', alignSelf: 'center'}}
+                    /> */}
+                </>
+            )}
+
         </View>
     );
 }
@@ -187,7 +271,6 @@ const styles = StyleSheet.create({
     },
     header: {
         paddingBottom: 20,
-        paddingTop: 20,
         width: width,
         justifyContent: 'center',
         alignItems: 'center',
@@ -195,10 +278,9 @@ const styles = StyleSheet.create({
     },
     textHeader: {
         width: width * 0.85,
-        fontSize: 24,
+        fontSize: 28,
         color: colors.white,
         fontWeight: 'bold',
-        paddingLeft: 20
     },
     buttonGoBack: {
         width: width * 0.15,
@@ -210,7 +292,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: height * 0.73,
-        marginBottom: 30,
+        marginBottom: 10,
         backgroundColor: colors.white,
         borderRadius: 5,
         width: width * 0.93,
@@ -229,14 +311,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: width * 0.92,
+        width: width * 0.6,
+        //backgroundColor: '#f0f',
         padding: 3,
+        marginBottom: 10,
     },
     palavraDoContainer: {
         color: colors.white,
-        fontSize: height < 800 ? 16 : 20,
+        fontSize: height < 800 ? 14 : 20,
         fontWeight: 'bold',
-        width: height < 800 ? width * 0.3 : width * 0.2,
     },
 
     wordsGroup: {
