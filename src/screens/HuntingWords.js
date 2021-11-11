@@ -14,21 +14,7 @@ const createGame = require('../creates/createGame');
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-import SoundPlayer from 'react-native-sound-player'
-
-
-// Regras:
-
-// Dificuldade
-// Fácil: palavras escondidas na horizontal e vertical, sem palavras ao contrário
-// Médio: palavras escondidas na horizontal, vertical e diagonal, sem palavras ao contrário
-// Difícil: palavras escondidas na horizontal, vertical e diagonal, com palavras ao contrário
-
-//Tamanho
-// 6x6
-// 9x9
-// 12x12
-// 15x15
+import SoundPlayer from 'react-native-sound-player';
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,12 +33,14 @@ const HuntingWords = () => {
     const [columns, setColumns] = useState(12);
     const [allWords, setAllWords] = useState(
         [
-            '11111111', '22222222', '333333333', '444444444', '55555555', '666666666', '77777777', '8888888', '99999999', '000000000', '100000000'
+            'ASTROS', 'CARTOGRAFO', 'MAPOTECA', 'ATLANTICO', 
+            'ESTRELA', 'NAVEGACAO', 'ATLAS', 'OCULO', 
+            'PORTULANO', 'CARTANAUTICA', 'AGULHAMAREAR'
         ]
     );
-    const [words, setWords] = useState(['111111111', '222222222', '3333333333', '444444444']);
+    const [words, setWords] = useState(['ASTROS', 'OCULO', 'NAVEGACAO', 'ESTRELA']);
     // Palavras com mais de 10 caracteres: CARTANAUTICA, AGULHAMAREAR
-    // Todas as palavras: ASTROS, CARTOGRAFO, MAPOTECA, ATLANTICO, ESTRELA, NAVEGACAO,ATLAS, OCULO, PORTULANO, CARTANAUTICA, AGULHAMAREAR
+    // Todas as palavras: ASTROS, CARTOGRAFO, MAPOTECA, ATLANTICO, ESTRELA, NAVEGACAO, ATLAS, OCULO, PORTULANO, CARTANAUTICA, AGULHAMAREAR
     const [stateGame, setStateGame] = useState({
         game: new createGame(rows, columns, words, options),
     });
@@ -237,7 +225,7 @@ const HuntingWords = () => {
                                                 textDecorationLine: isFinded ? 'line-through' : 'none',
                                                 textDecorationColor: colors.cor_secundaria,
                                                 textDecorationStyle: 'dotted',
-                                                width: width * 0.3
+                                                width: width * 0.5,
                                             }}
                                         >{palavra}</Text>
                                     ))
@@ -304,7 +292,7 @@ const HuntingWords = () => {
                                 fontWeight: 'bold',
                                 textAlign: 'center'
                             }}
-                        >PARABÉNS VOCÊ ACHOU TODAS AS PALAVRAS!</Text>
+                        >PARABÉNS! VOCÊ ACHOU TODAS AS PALAVRAS!</Text>
                         <LottieView
                             source={require('../animations/winner.json')}
                             autoPlay
@@ -371,7 +359,7 @@ const styles = StyleSheet.create({
         width: width * 0.6,
         padding: 3,
         marginBottom: 10,
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     wordsGroup: {
         paddingTop: 24,
