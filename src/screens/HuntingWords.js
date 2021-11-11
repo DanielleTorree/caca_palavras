@@ -14,6 +14,8 @@ const createGame = require('../creates/createGame');
 import { Icon } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
+import SoundPlayer from 'react-native-sound-player'
+
 
 // Regras:
 
@@ -41,7 +43,6 @@ const options = {
 
 const HuntingWords = () => {
     const navigation = useNavigation();
-    // const [rerender, setRerender] = useState(false);
     const [rows, setRows] = useState(12);
     const [columns, setColumns] = useState(12);
     const [allWords, setAllWords] = useState(
@@ -52,10 +53,17 @@ const HuntingWords = () => {
     const [words, setWords] = useState(['111111111', '222222222', '3333333333', '444444444']);
     // Palavras com mais de 10 caracteres: CARTANAUTICA, AGULHAMAREAR
     // Todas as palavras: ASTROS, CARTOGRAFO, MAPOTECA, ATLANTICO, ESTRELA, NAVEGACAO,ATLAS, OCULO, PORTULANO, CARTANAUTICA, AGULHAMAREAR
-    const [state, setState] = useState({
+    const [stateGame, setStateGame] = useState({
         game: new createGame(rows, columns, words, options),
     });
     const [qtdPalavrasEncontradas, setQtdPalavrasEncontradas] = useState(0);
+    const [palavrasEncontradas, setPalavrasEncontradas] = useState([
+        { palavra: words[0], isFinded: false },
+        { palavra: words[1], isFinded: false },
+        { palavra: words[2], isFinded: false },
+        { palavra: words[3], isFinded: false },
+    ]);
+    const [rerender, setRerender] = useState(false);
 
     const gerarPalavrasAleatorias = () => {
         let palavrasAleatorias = [];
@@ -75,11 +83,15 @@ const HuntingWords = () => {
         }
 
         setWords(palavrasAleatorias);
-        setState({
+        setStateGame({
             game: new createGame(rows, columns, palavrasAleatorias, options),
         });
-
-        console.log(palavrasAleatorias)
+        setPalavrasEncontradas([
+            { palavra: palavrasAleatorias[0], isFinded: false },
+            { palavra: palavrasAleatorias[1], isFinded: false },
+            { palavra: palavrasAleatorias[2], isFinded: false },
+            { palavra: palavrasAleatorias[3], isFinded: false },
+        ]);
     }
 
     function getRandomArbitrary(min, max) {
@@ -88,7 +100,7 @@ const HuntingWords = () => {
 
     const getLetterSelectedSameWord = (word) => {
         let lettersSelected = 0;
-        state.game.board
+        stateGame.game.board
             .filter((row) => {
                 lettersSelected = lettersSelected + row.filter((el) => {
                     return el.word == word && el.isSelected;
@@ -101,23 +113,36 @@ const HuntingWords = () => {
     const verifyFindWord = (words) => {
         for (let word of words) {
             let lettersSelected = getLetterSelectedSameWord(word);
-            console.log("word of words: ", word, words);
-            console.log("lettersSelected: ", lettersSelected);
-            console.log("lettersSelected == word.length ", lettersSelected, word.length);
 
             if (lettersSelected == word.length) {
-                alert("Você achou a palavra: " + word);
                 setQtdPalavrasEncontradas(qtdPalavrasEncontradas + 1);
+                setRerender(!rerender);
+
+                palavrasEncontradas.map((valor) => {
+                    if (word == valor.palavra) {
+                        valor.isFinded = !valor.isFinded;
+                        setPalavrasEncontradas(palavrasEncontradas);
+                        executaAudio();
+                    }
+                })
             }
         }
     }
 
+    const executaAudio = () => {
+        try {
+            SoundPlayer.playSoundFile('success', 'mp3');
+        } catch (e) {
+            console.log("erro ao executar audio");
+        }
+    };
+
     const selectLetter = (item) => {
-        let game = state.game;
+        let game = stateGame.game;
 
         game.board[item.rows][item.columns].setIsSelected(!item.isSelected);
 
-        setState({
+        setStateGame({
             game: game
         });
 
@@ -125,10 +150,11 @@ const HuntingWords = () => {
     }
 
     const gerarNovoGame = () => {
+        setQtdPalavrasEncontradas(0);
         gerarPalavrasAleatorias();
     }
 
-    const { board } = state.game;
+    const { board } = stateGame.game;
 
     return (
         <View style={styles.container}>
@@ -196,22 +222,30 @@ const HuntingWords = () => {
                     >
                         <View
                             style={{
-                                //backgroundColor: '#ccc',
                                 marginLeft: 18
                             }}
                         >
                             <View style={styles.containerPalavras}>
-                                <Text style={styles.palavraDoContainer}>{words[0]}</Text>
-                                <Text style={styles.palavraDoContainer}>{words[1]}</Text>
-                            </View>
-                            <View style={styles.containerPalavras}>
-                                <Text style={styles.palavraDoContainer}>{words[2]}</Text>
-                                <Text style={styles.palavraDoContainer}>{words[3]}</Text>
+                                {
+                                    palavrasEncontradas.map(({ palavra, isFinded }) => (
+                                        <Text
+                                            key={palavra}
+                                            style={{
+                                                color: isFinded ? '#028' : colors.white,
+                                                fontSize: height < 800 ? 16 : 20,
+                                                fontWeight: 'bold',
+                                                textDecorationLine: isFinded ? 'line-through' : 'none',
+                                                textDecorationColor: colors.cor_secundaria,
+                                                textDecorationStyle: 'dotted',
+                                                width: width * 0.3
+                                            }}
+                                        >{palavra}</Text>
+                                    ))
+                                }
                             </View>
                         </View>
                         <View style={{
                             width: width * 0.3,
-                            //backgroundColor: '#000',
                         }}>
                             <TouchableOpacity
                                 onPress={() => gerarNovoGame()}
@@ -234,27 +268,50 @@ const HuntingWords = () => {
                 </>
             ) : (
                 <>
-                <View style={styles.header}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate("Home")}
-                        style={styles.buttonGoBack}
-                    >
-                        <Icon 
-                            name="x"
-                            type="foundation"
-                            sixe={24}
-                            color={colors.white}
-                            style={{fontWeight: 'bold'}}
+                    <View style={{
+                        marginTop: 20,
+                        marginRight: 10,
+                        width: width,
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        height: height * 0.1,
+                    }}>
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate("Home")}
+                            style={styles.buttonGoBack}
+                        >
+                            <Icon
+                                name="x"
+                                type="foundation"
+                                sixe={26}
+                                color={colors.white}
+                                style={{ fontWeight: 'bold' }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{
+                        paddingBottom: 30,
+                        width: width * 0.9,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: height * 0.9,
+                    }}>
+                        <Text
+                            style={{
+                                color: colors.white,
+                                fontSize: 24,
+                                fontWeight: 'bold',
+                                textAlign: 'center'
+                            }}
+                        >PARABÉNS VOCÊ ACHOU TODAS AS PALAVRAS!</Text>
+                        <LottieView
+                            source={require('../animations/winner.json')}
+                            autoPlay
+                            loop={true}
+                            style={{ width: '80%', alignSelf: 'center' }}
                         />
-                    </TouchableOpacity>
-                </View>
-                
-                    {/* <LottieView
-                        source={require('../animations/winner_hunting_words.json')}
-                        autoPlay
-                        loop={true}
-                        style={{width: '70%', alignSelf: 'center'}}
-                    /> */}
+                    </View>
                 </>
             )}
 
@@ -270,7 +327,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     header: {
-        paddingBottom: 20,
+        paddingBottom: 8,
         width: width,
         justifyContent: 'center',
         alignItems: 'center',
@@ -312,16 +369,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: width * 0.6,
-        //backgroundColor: '#f0f',
         padding: 3,
         marginBottom: 10,
+        flexWrap: 'wrap'
     },
-    palavraDoContainer: {
-        color: colors.white,
-        fontSize: height < 800 ? 14 : 20,
-        fontWeight: 'bold',
-    },
-
     wordsGroup: {
         paddingTop: 24,
         paddingBottom: 24,
