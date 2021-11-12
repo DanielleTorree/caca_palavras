@@ -4,20 +4,20 @@ const createHorizontalPositions = require('../createPositions/createHorizontalPo
 const createDiagonalRightPositions = require('../createPositions/createDiagonalRightPositions');
 const createDiagonalLeftPositions = require('../createPositions/createDiagonalLeftPositions');
 
-function createPositionsToWordInBoard(word, board, options){
+function createPositionsToWordInBoard(word, board, options, arrColums){
     let positions = [];
     
     const rowMax = board.length;
     //console.log("rowMax: ", rowMax);
     const columnMax = board[0].length;
     //console.log("columnMax: ", columnMax);
-
+    
     const directions = directionsPositions(options);
     //console.log("directions: ", directions);
 
     const inverseWord = options.inverseWord && random.getBoolean();
 
-    positions = random.getFunctions(directions)(word, rowMax, columnMax, inverseWord);
+    positions = random.getFunctions(directions)(word, rowMax, columnMax, inverseWord, arrColums);
     
     if(isPositionRepeated(positions, board, options.wordsCross))
         positions = createPositionsToWordInBoard(word, board, options);
