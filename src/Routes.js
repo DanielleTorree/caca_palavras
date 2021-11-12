@@ -6,26 +6,49 @@ import colors from './colors.json';
 // screens
 import Home from './screens/Home';
 import HuntingWords from './screens/HuntingWords';
+import CartazExposicao from './screens/CartazExposicao';
 
 const Stack = createNativeStackNavigator();
 
 const Routes = () => {
-    return(
+    return (
         <NavigationContainer initialRouteName="Home">
             <Stack.Navigator>
-                <Stack.Screen 
-                    name="Home" 
-                    component={Home} 
-                    options={{ 
+                <Stack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{
                         headerShown: false
                     }}
                 />
-                <Stack.Screen 
-                    name="HuntingWords" 
-                    component={HuntingWords} 
-                    options={{ 
-                        headerShown: false
+                <Stack.Screen
+                    name="HuntingWords"
+                    component={HuntingWords}
+                    options={{
+                        title: 'Caça Palavras',
+                        headerStyle: {
+                            backgroundColor: colors.cor_primaria,
+                        },
+                        headerTintColor: colors.white,
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
                     }}
+                />
+                <Stack.Screen
+                    name="CartazExposicao"
+                    component={CartazExposicao}
+                    options={{
+                        title: 'Exposição Museu Naval',
+                        headerStyle: {
+                            backgroundColor: colors.cor_primaria,
+                        },
+                        headerTintColor: colors.white,
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                        },
+                    }}
+
                 />
             </Stack.Navigator>
         </NavigationContainer>
