@@ -33,8 +33,8 @@ const HuntingWords = () => {
     const [columns, setColumns] = useState(12);
     const [allWords, setAllWords] = useState(
         [
-            'ASTROS', 'CARTOGRAFO', 'MAPOTECA', 'ATLANTICO', 
-            'ESTRELA', 'NAVEGACAO', 'ATLAS', 'OCULO', 
+            'ASTROS', 'CARTOGRAFO', 'MAPOTECA', 'ATLANTICO',
+            'ESTRELA', 'NAVEGACAO', 'ATLAS', 'OCULO',
             'PORTULANO', 'CARTANAUTICA', 'AGULHAMAREAR'
         ]
     );
@@ -51,7 +51,6 @@ const HuntingWords = () => {
         { palavra: words[2], isFinded: false },
         { palavra: words[3], isFinded: false },
     ]);
-    const [rerender, setRerender] = useState(false);
 
     const gerarPalavrasAleatorias = () => {
         let palavrasAleatorias = [];
@@ -104,7 +103,6 @@ const HuntingWords = () => {
 
             if (lettersSelected == word.length) {
                 setQtdPalavrasEncontradas(qtdPalavrasEncontradas + 1);
-                setRerender(!rerender);
 
                 palavrasEncontradas.map((valor) => {
                     if (word == valor.palavra) {
@@ -149,24 +147,6 @@ const HuntingWords = () => {
             <StatusBar backgroundColor={colors.cor_primaria} />
             {qtdPalavrasEncontradas != 4 ? (
                 <>
-                    <View style={styles.header}>
-
-                        <TouchableOpacity
-                            onPress={() => navigation.goBack()}
-                            style={styles.buttonGoBack}
-                        >
-                            <Icon
-                                name='arrow-left'
-                                type='font-awesome'
-                                color={colors.white}
-                                size={24}
-                            />
-                        </TouchableOpacity>
-
-                        <Text
-                            style={styles.textHeader}
-                        >Caça Palavras</Text>
-                    </View>
                     <View style={styles.containerCaixaExterna}>
                         <View style={styles.containerCaixaInterna}>
                             {board.map((row, indexRow) => (
@@ -256,28 +236,6 @@ const HuntingWords = () => {
                 </>
             ) : (
                 <>
-                    <View style={{
-                        marginTop: 20,
-                        marginRight: 10,
-                        width: width,
-                        justifyContent: 'flex-end',
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        height: height * 0.1,
-                    }}>
-                        <TouchableOpacity
-                            onPress={() => navigation.navigate("Home")}
-                            style={styles.buttonGoBack}
-                        >
-                            <Icon
-                                name="x"
-                                type="foundation"
-                                sixe={26}
-                                color={colors.white}
-                                style={{ fontWeight: 'bold' }}
-                            />
-                        </TouchableOpacity>
-                    </View>
                     <View style={{
                         paddingBottom: 30,
                         width: width * 0.9,
