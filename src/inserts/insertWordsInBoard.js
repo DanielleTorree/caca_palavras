@@ -2,10 +2,11 @@ const createPositionsToWordInBoard = require('../creates/createPositionsToWordIn
 
 function insertWordsInBoard(board, words, options){
 
+    var arrColums = [];
     for(let word of words){
         // console.log("word: ", word);
         // console.log("words: ", words);
-        let positions = createPositionsToWordInBoard(word, board, options);
+        let positions = createPositionsToWordInBoard(word, board, options, arrColums);
         
         let wordIndex = 0;
         
