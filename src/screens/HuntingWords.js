@@ -255,7 +255,7 @@ const HuntingWords = () => {
                             source={require('../animations/winner.json')}
                             autoPlay
                             loop={true}
-                            style={{ width: '80%', alignSelf: 'center' }}
+                            style={{ width: '70%', alignSelf: 'center' }}
                         />
                     </View>
                 </>
@@ -295,10 +295,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: height * 0.73,
-        marginBottom: 10,
         backgroundColor: colors.white,
         borderRadius: 5,
         width: width * 0.93,
+        marginTop: 20
     },
     containerCaixaInterna: {
         width: width * 0.92,

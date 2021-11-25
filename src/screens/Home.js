@@ -65,11 +65,20 @@ const Home = () => {
                     marginTop: -110
                 }}
             >
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        color: colors.cinza,
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        width: width * 0.8
+                    }}
+                >Bem-vindo ao Caça Palavras do Museu Naval</Text>
                 <LottieView
                     source={require('../animations/crown-premium-icon-animation.json')}
                     autoPlay
                     loop={true}
-                    style={{ width: '70%', alignSelf: 'center' }}
+                    style={{ width: '60%', alignSelf: 'center' }}
                 />
                 <TouchableHighlight
                     activeOpacity={1}
@@ -115,7 +124,7 @@ const Home = () => {
                     resizeMode="stretch"
                     style={{
                         width: '40%',
-                        height: '110%',
+                        height: '120%',
                         borderRadius: 5,
                         justifyContent: 'center',
                         alignItems: 'center',
