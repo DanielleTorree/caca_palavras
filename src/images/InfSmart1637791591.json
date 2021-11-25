@@ -1,0 +1,151 @@
+[{
+  "version": "1.0",
+  "image": {
+    "name": "/home/videosdownloader/public_html/image/public/uploadt/InfSmart.png",
+    "baseName": "InfSmart.png",
+    "format": "PNG",
+    "formatDescription": "PNG",
+    "mimeType": "image/png",
+    "class": "DirectClass",
+    "geometry": {
+      "width": 3308,
+      "height": 470,
+      "x": 0,
+      "y": 0
+    },
+    "resolution": {
+      "x": 118.11,
+      "y": 118.11
+    },
+    "printSize": {
+      "x": 28.0078,
+      "y": 3.97934
+    },
+    "units": "PixelsPerCentimeter",
+    "type": "PaletteAlpha",
+    "baseType": "Undefined",
+    "endianness": "Undefined",
+    "colorspace": "sRGB",
+    "depth": 8,
+    "baseDepth": 8,
+    "channelDepth": {
+      "alpha": 8,
+      "red": 8,
+      "green": 8,
+      "blue": 8
+    },
+    "pixels": 6219040,
+    "imageStatistics": {
+      "Overall": {
+        "min": 0,
+        "max": 255,
+        "mean": 176.511,
+        "median": 191.25,
+        "standardDeviation": 24823,
+        "kurtosis": -0.998972,
+        "skewness": -0.896388,
+        "entropy": 0.748475
+      }
+    },
+    "channelStatistics": {
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "mean": 117.44,
+        "median": 0,
+        "standardDeviation": 32482.2,
+        "kurtosis": -1.96541,
+        "skewness": 0.158346,
+        "entropy": 0.278413
+      },
+      "red": {
+        "min": 0,
+        "max": 255,
+        "mean": 209.419,
+        "median": 255,
+        "standardDeviation": 23917.6,
+        "kurtosis": 1.25294,
+        "skewness": -1.79732,
+        "entropy": 0.905162
+      },
+      "green": {
+        "min": 146,
+        "max": 255,
+        "mean": 206.145,
+        "median": 255,
+        "standardDeviation": 13435.8,
+        "kurtosis": -1.95396,
+        "skewness": -0.148224,
+        "entropy": 0.905162
+      },
+      "blue": {
+        "min": 0,
+        "max": 255,
+        "mean": 173.04,
+        "median": 255,
+        "standardDeviation": 29456.5,
+        "kurtosis": -1.27683,
+        "skewness": -0.832107,
+        "entropy": 0.905162
+      }
+    },
+    "alpha": "#FFFFFF00",
+    "renderingIntent": "Perceptual",
+    "gamma": 0.454545,
+    "chromaticity": {
+      "redPrimary": {
+        "x": 0.64,
+        "y": 0.33
+      },
+      "greenPrimary": {
+        "x": 0.3,
+        "y": 0.6
+      },
+      "bluePrimary": {
+        "x": 0.15,
+        "y": 0.06
+      },
+      "whitePrimary": {
+        "x": 0.3127,
+        "y": 0.329
+      }
+    },
+    "matteColor": "#BDBDBD",
+    "backgroundColor": "#FFFFFF",
+    "borderColor": "#DFDFDF",
+    "transparentColor": "#00000000",
+    "interlace": "None",
+    "intensity": "Undefined",
+    "compose": "Over",
+    "pageGeometry": {
+      "width": 3308,
+      "height": 470,
+      "x": 0,
+      "y": 0
+    },
+    "dispose": "Undefined",
+    "iterations": 0,
+    "compression": "Zip",
+    "orientation": "Undefined",
+    "properties": {
+      "date:create": "2021-11-24T22:06:30+00:00",
+      "date:modify": "2021-11-24T22:06:30+00:00",
+      "png:IHDR.bit-depth-orig": "8",
+      "png:IHDR.bit_depth": "8",
+      "png:IHDR.color-type-orig": "6",
+      "png:IHDR.color_type": "6 (RGBA)",
+      "png:IHDR.interlace_method": "0 (Not interlaced)",
+      "png:IHDR.width,height": "3308, 470",
+      "png:pHYs": "x_res=11811, y_res=11811, units=1",
+      "png:sRGB": "intent=0 (Perceptual Intent)",
+      "signature": "47cff3f8f68d698c61ffb131160d851b1a4642d0c5ba2f1d0f5942a32072375f"
+    },
+    "tainted": false,
+    "filesize": "52351B",
+    "numberPixels": "1554760",
+    "pixelsPerSecond": "13.3551MB",
+    "userTime": "0.110u",
+    "elapsedTime": "0:01.116",
+    "version": "ImageMagick 7.0.10-58 Q16 x86_64 2021-01-14 https://imagemagick.org"
+  }
+}]

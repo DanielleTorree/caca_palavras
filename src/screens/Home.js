@@ -13,6 +13,8 @@ import LottieView from 'lottie-react-native';
 import colors from '../colors.json';
 import { useNavigation } from '@react-navigation/native';
 import iconeMarinha from '../images/logo_dphdm.png';
+import sobre from '../images/sobre.png';
+import imgJson from '../images/img.json';
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,7 +22,15 @@ const Home = () => {
     const navigation = useNavigation();
 
     return (
-        <View style={{ flex: 1, height: height }}>
+        <View 
+            style={{ 
+                flex: 1, 
+                height: height, 
+                backgroundColor: colors.white, 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+            }}
+        >
             <StatusBar barStyle="light-content" backgroundColor={colors.cor_primaria} />
             <View
                 style={{
@@ -34,25 +44,29 @@ const Home = () => {
                     style={{
                         height: 100,
                         width: 60,
-                        marginHorizontal: 20,
                         marginVertical: 10
                     }}
                 >
                     <Image
-                        source={iconeMarinha}
+                        source={sobre}
                         style={{
-                            height: 100,
-                            width: 60,
-                            marginHorizontal: -5,
-                            marginVertical: 10
+                            height: 40,
+                            width: 40,
+                            marginTop: 10,
                         }}
                     />
                 </TouchableOpacity>
             </View>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: -100 }}>
-
+            <View 
+                style={{ 
+                    flex: 1, 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    marginTop: -110
+                }}
+            >
                 <LottieView
-                    source={require('../animations/play_hunting_words.json')}
+                    source={require('../animations/crown-premium-icon-animation.json')}
                     autoPlay
                     loop={true}
                     style={{ width: '70%', alignSelf: 'center' }}
@@ -63,8 +77,8 @@ const Home = () => {
                     onPress={() => navigation.navigate('HuntingWords')}
                     style={{
                         backgroundColor: colors.cor_primaria,
-                        width: height < 800 ? "45%" : '35%',
-                        height: height < 800 ? "6%" : "6%",
+                        width: height < 800 ? 200 : 300,
+                        height: height < 800 ? 45 : 68,
                         borderRadius: height < 800 ? 23 : 30,
                         justifyContent: 'center',
                         alignItems: 'center'
@@ -78,15 +92,36 @@ const Home = () => {
                         }}
                     >Jogar</Text>
                 </TouchableHighlight>
-                {/* </View> */}
             </View>
-            <Text style={{
-                color: colors.cor_primaria,
-                fontSize: 18,
-                fontWeight: 'bold',
-                textAlign: 'center',
-                marginBottom: 10
-            }}>By InfSmart</Text>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: 20,
+                }}
+            >
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        color: colors.cinza,
+                        fontSize: 16,
+                        fontWeight: 'bold',
+                        marginHorizontal: 5
+                    }}
+                >By</Text>
+                <Image 
+                    source={{ uri: imgJson.logo_infsmart_fundo_branco }}
+                    resizeMode="stretch"
+                    style={{
+                        width: '40%',
+                        height: '110%',
+                        borderRadius: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                />
+            </View>
         </View>
     );
 }
