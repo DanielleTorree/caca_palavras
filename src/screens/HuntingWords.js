@@ -6,7 +6,8 @@ import {
     TouchableHighlight,
     StatusBar,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import colors from '../colors.json';
@@ -38,7 +39,7 @@ const HuntingWords = () => {
             'PORTULANO', 'CARTANAUTICA', 'AGULHAMAREAR'
         ]
     );
-    const [words, setWords] = useState(['ASTROS', 'OCULO', 'NAVEGACAO', 'ESTRELA']);
+    const [words, setWords] = useState([]);
     // Palavras com mais de 10 caracteres: CARTANAUTICA, AGULHAMAREAR
     // Todas as palavras: ASTROS, CARTOGRAFO, MAPOTECA, ATLANTICO, ESTRELA, NAVEGACAO, ATLAS, OCULO, PORTULANO, CARTANAUTICA, AGULHAMAREAR
     const [stateGame, setStateGame] = useState({
@@ -51,6 +52,7 @@ const HuntingWords = () => {
         { palavra: words[2], isFinded: false },
         { palavra: words[3], isFinded: false },
     ]);
+    const [loading, setLoading] = useState(true);
 
     const gerarPalavrasAleatorias = () => {
         let palavrasAleatorias = [];
@@ -142,97 +144,108 @@ const HuntingWords = () => {
 
     const { board } = stateGame.game;
 
+    useEffect(() => {
+        
+        gerarPalavrasAleatorias();
+        setLoading(false);
+
+    }, [])
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={colors.cor_primaria} />
             {qtdPalavrasEncontradas != 4 ? (
                 <>
-                    <View style={styles.containerCaixaExterna}>
-                        <View style={styles.containerCaixaInterna}>
-                            {board.map((row, indexRow) => (
-                                <View key={'row' + indexRow} style={{ backgroundColor: '#258' }}>
-                                    {row.map((column, indexColumn) => (
-                                        <TouchableHighlight
-                                            activeOpacity={1}
-                                            underlayColor={colors.cor_secundaria}
-                                            key={'column' + indexColumn}
-                                            onPress={() => { selectLetter(column) }}
-                                            style={{
-                                                margin: -0.1,
-                                                width: width * 0.075,
-                                                height: height * 0.06,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                backgroundColor: column.isSelected ? colors.cor_secundaria : colors.white,
-                                            }}
-                                        >
-                                            <Text
-                                                style={{
-                                                    color: column.isSelected ? colors.white : colors.black,
-                                                    fontSize: 24,
-                                                    fontWeight: 'bold'
-                                                }}
-                                            >
-                                                {column.letter}
-                                            </Text>
-                                        </TouchableHighlight>
+                    {loading ? <><ActivityIndicator size="large" color="#fff"/></> : 
+                        <>
+                            <View style={styles.containerCaixaExterna}>
+                                <View style={styles.containerCaixaInterna}>
+                                    {board.map((row, indexRow) => (
+                                        <View key={'row' + indexRow} style={{ backgroundColor: '#258' }}>
+                                            {row.map((column, indexColumn) => (
+                                                <TouchableHighlight
+                                                    activeOpacity={1}
+                                                    underlayColor={colors.cor_secundaria}
+                                                    key={'column' + indexColumn}
+                                                    onPress={() => { selectLetter(column) }}
+                                                    style={{
+                                                        margin: -0.1,
+                                                        width: width * 0.075,
+                                                        height: height * 0.06,
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        backgroundColor: column.isSelected ? colors.cor_secundaria : colors.white,
+                                                    }}
+                                                >
+                                                    <Text
+                                                        style={{
+                                                            color: column.isSelected ? colors.white : colors.black,
+                                                            fontSize: 24,
+                                                            fontWeight: 'bold'
+                                                        }}
+                                                    >
+                                                        {column.letter}
+                                                    </Text>
+                                                </TouchableHighlight>
+                                            ))}
+                                        </View>
                                     ))}
                                 </View>
-                            ))}
-                        </View>
-                    </View>
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                        }}
-                    >
-                        <View
-                            style={{
-                                marginLeft: 18
-                            }}
-                        >
-                            <View style={styles.containerPalavras}>
-                                {
-                                    palavrasEncontradas.map(({ palavra, isFinded }) => (
-                                        <Text
-                                            key={palavra}
-                                            style={{
-                                                color: isFinded ? '#028' : colors.white,
-                                                fontSize: height < 800 ? 16 : 20,
-                                                fontWeight: 'bold',
-                                                textDecorationLine: isFinded ? 'line-through' : 'none',
-                                                textDecorationColor: colors.cor_secundaria,
-                                                textDecorationStyle: 'dotted',
-                                                width: width * 0.5,
-                                            }}
-                                        >{palavra}</Text>
-                                    ))
-                                }
                             </View>
-                        </View>
-                        <View style={{
-                            width: width * 0.3,
-                        }}>
-                            <TouchableOpacity
-                                onPress={() => gerarNovoGame()}
+                            <View
                                 style={{
                                     justifyContent: 'center',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
                                 }}
                             >
-                                <Icon
-                                    reverse
-                                    name="rotate-right"
-                                    type="font-awesome"
-                                    size={24}
-                                    color={colors.cor_secundaria}
-                                />
-                            </TouchableOpacity>
-                        </View>
+                                <View
+                                    style={{
+                                        marginLeft: 18
+                                    }}
+                                >
+                                    <View style={styles.containerPalavras}>
+                                        {
+                                            palavrasEncontradas.map(({ palavra, isFinded }) => (
+                                                <Text
+                                                    key={palavra}
+                                                    style={{
+                                                        color: isFinded ? '#028' : colors.white,
+                                                        fontSize: height < 800 ? 16 : 20,
+                                                        fontWeight: 'bold',
+                                                        textDecorationLine: isFinded ? 'line-through' : 'none',
+                                                        textDecorationColor: colors.cor_secundaria,
+                                                        textDecorationStyle: 'dotted',
+                                                        width: width * 0.5,
+                                                    }}
+                                                >{palavra}</Text>
+                                            ))
+                                        }
+                                    </View>
+                                </View>
+                                <View style={{
+                                    width: width * 0.3,
+                                }}>
+                                    <TouchableOpacity
+                                        onPress={() => gerarNovoGame()}
+                                        style={{
+                                            justifyContent: 'center',
+                                            alignItems: 'center'
+                                        }}
+                                    >
+                                        <Icon
+                                            reverse
+                                            name="rotate-right"
+                                            type="font-awesome"
+                                            size={24}
+                                            color={colors.cor_secundaria}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
 
-                    </View>
+                            </View>
+                        </> 
+                    }
                 </>
             ) : (
                 <>
