@@ -73,7 +73,7 @@ const Home = () => {
                         fontWeight: 'bold',
                         width: width * 0.8
                     }}
-                >Bem-vindo ao Caça Palavras do Museu Naval</Text>
+                >Bem-vindo ao Caça-Palavras do Museu Naval</Text>
                 <LottieView
                     source={require('../animations/crown-premium-icon-animation.json')}
                     autoPlay
