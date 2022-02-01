@@ -39,7 +39,7 @@ const Routes = () => {
                     name="CartazExposicao"
                     component={CartazExposicao}
                     options={{
-                        title: 'Exposição Museu Naval',
+                        title: 'Exposição do Museu Naval',
                         headerStyle: {
                             backgroundColor: colors.cor_primaria,
                         },
